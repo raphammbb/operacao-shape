@@ -1,0 +1,9 @@
+{
+  "name": "Barriguinha?",
+  "short_name": "Barriguinha",
+  "start_url": "/operacao-shape/",
+  "display": "standalone",
+  "background_color": "#09090b",
+  "theme_color": "#09090b",
+  "icons": [{ "src": "/operacao-shape/bg.png", "sizes": "any", "type": "image/png" }]
+}

@@ -33,118 +33,171 @@ const combinados = [
 
 export default function Page() {
   return (
-    <div
-      style={{
-        minHeight: "100dvh",
-        display: "flex",
-        flexDirection: "column",
-        alignItems: "center",
-        justifyContent: "center",
-        padding: "3rem 1.25rem",
-      }}
-    >
-      <div style={{ width: "100%", maxWidth: 600 }}>
-        {/* Header */}
-        <div style={{ marginBottom: "3rem" }}>
-          <h1
-            style={{
-              fontSize: "clamp(2.5rem, 8vw, 4rem)",
-              fontWeight: 700,
-              letterSpacing: "-0.04em",
-              margin: 0,
-              lineHeight: 1.1,
-              color: "#fafafa",
-            }}
-          >
-            Barriguinha?
-          </h1>
-          <p
-            style={{
-              marginTop: "0.6rem",
-              fontSize: "1rem",
-              color: "#52525b",
-              fontWeight: 500,
-              letterSpacing: "0.02em",
-              textTransform: "uppercase",
-            }}
-          >
-            desafio do casal · 30 dias
-          </p>
-        </div>
+    <>
+      <style>{`
+        @keyframes bgPulse {
+          0%, 100% { opacity: 0.05; }
+          50%       { opacity: 0.2; }
+        }
+        .bg-image {
+          animation: bgPulse 7s ease-in-out infinite;
+        }
+      `}</style>
 
-        {/* Cards */}
-        <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
-          {combinados.map((c) => (
-            <div
-              key={c.titulo}
+      {/* Imagem de fundo pulsando */}
+      <div
+        className="bg-image"
+        style={{
+          position: "fixed",
+          inset: 0,
+          backgroundImage: "url('/operacao-shape/bg.png')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          filter: "blur(2px) saturate(0.7)",
+          zIndex: 0,
+        }}
+      />
+
+      {/* Overlay gradiente */}
+      <div
+        style={{
+          position: "fixed",
+          inset: 0,
+          background:
+            "linear-gradient(to bottom, rgba(9,9,11,0.72) 0%, rgba(9,9,11,0.58) 40%, rgba(9,9,11,0.82) 100%)",
+          zIndex: 1,
+        }}
+      />
+
+      {/* Conteúdo */}
+      <div
+        style={{
+          position: "relative",
+          zIndex: 2,
+          minHeight: "100dvh",
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "3rem 1.25rem",
+        }}
+      >
+        <div style={{ width: "100%", maxWidth: 580 }}>
+          {/* Título */}
+          <div style={{ marginBottom: "2.5rem" }}>
+            <h1
               style={{
-                display: "flex",
-                alignItems: "flex-start",
-                gap: "1.25rem",
-                padding: "1.25rem 1.5rem",
-                backgroundColor: "#111113",
-                border: "1px solid rgba(255,255,255,0.06)",
-                borderRadius: "1rem",
+                fontSize: "clamp(3rem, 10vw, 4.5rem)",
+                fontWeight: 700,
+                letterSpacing: "-0.05em",
+                margin: 0,
+                lineHeight: 1,
+                color: "#fafafa",
               }}
             >
+              Barriguinha?
+            </h1>
+            <p
+              style={{
+                marginTop: "0.75rem",
+                fontSize: "0.78rem",
+                color: "#52525b",
+                fontWeight: 500,
+                letterSpacing: "0.12em",
+                textTransform: "uppercase",
+              }}
+            >
+              desafio do casal&nbsp;&nbsp;·&nbsp;&nbsp;30 dias
+            </p>
+          </div>
+
+          {/* Cards */}
+          <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
+            {combinados.map((c) => (
               <div
+                key={c.titulo}
                 style={{
-                  fontSize: "1.75rem",
-                  lineHeight: 1,
-                  flexShrink: 0,
-                  marginTop: "0.1rem",
+                  display: "flex",
+                  alignItems: "stretch",
+                  borderRadius: "0.875rem",
+                  overflow: "hidden",
+                  border: "1px solid rgba(255,255,255,0.07)",
+                  backdropFilter: "blur(10px)",
+                  WebkitBackdropFilter: "blur(10px)",
+                  backgroundColor: "rgba(15,15,18,0.65)",
                 }}
               >
-                {c.emoji}
-              </div>
-              <div>
+                {/* Pílula colorida lateral */}
                 <div
                   style={{
-                    fontWeight: 600,
-                    fontSize: "1rem",
-                    color: "#fafafa",
-                    marginBottom: "0.3rem",
+                    width: 3,
+                    flexShrink: 0,
+                    backgroundColor: c.cor,
+                    opacity: 0.8,
                   }}
-                >
-                  {c.titulo}
-                </div>
-                <div
-                  style={{
-                    fontSize: "0.875rem",
-                    color: "#52525b",
-                    lineHeight: 1.55,
-                  }}
-                >
-                  {c.descricao}
-                </div>
-              </div>
-              <div
-                style={{
-                  width: 6,
-                  height: 6,
-                  borderRadius: "50%",
-                  backgroundColor: c.cor,
-                  flexShrink: 0,
-                  marginTop: "0.55rem",
-                  marginLeft: "auto",
-                }}
-              />
-            </div>
-          ))}
-        </div>
+                />
 
-        {/* Footer */}
-        <p
-          style={{
-            marginTop: "2.5rem",
-            textAlign: "center",
-            fontSize: "0.78rem",
-            color: "#3f3f46",
-          }}
-        >
-          combinados são combinados
-        </p>
+                {/* Conteúdo do card */}
+                <div
+                  style={{
+                    display: "flex",
+                    alignItems: "flex-start",
+                    gap: "1rem",
+                    padding: "1.1rem 1.25rem",
+                    flex: 1,
+                  }}
+                >
+                  <span
+                    style={{
+                      fontSize: "1.5rem",
+                      lineHeight: 1,
+                      flexShrink: 0,
+                      marginTop: "0.1rem",
+                    }}
+                  >
+                    {c.emoji}
+                  </span>
+                  <div>
+                    <div
+                      style={{
+                        fontWeight: 600,
+                        fontSize: "0.95rem",
+                        color: "#f4f4f5",
+                        marginBottom: "0.25rem",
+                        letterSpacing: "-0.01em",
+                      }}
+                    >
+                      {c.titulo}
+                    </div>
+                    <div
+                      style={{
+                        fontSize: "0.82rem",
+                        color: "#52525b",
+                        lineHeight: 1.6,
+                      }}
+                    >
+                      {c.descricao}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Footer */}
+          <p
+            style={{
+              marginTop: "2.5rem",
+              textAlign: "center",
+              fontSize: "0.72rem",
+              color: "#27272a",
+              letterSpacing: "0.05em",
+            }}
+          >
+            combinados são combinados
+          </p>
+        </div>
       </div>
-    </div>
+    </>
   );
 }
