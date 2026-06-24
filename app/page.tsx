@@ -36,24 +36,28 @@ export default function Page() {
     <>
       <style>{`
         @keyframes bgPulse {
-          0%, 100% { opacity: 0.05; }
-          50%       { opacity: 0.2; }
+          0%, 100% { opacity: 0.35; }
+          50%       { opacity: 0.75; }
         }
         .bg-image {
-          animation: bgPulse 7s ease-in-out infinite;
+          animation: bgPulse 6s ease-in-out infinite;
         }
       `}</style>
 
       {/* Imagem de fundo pulsando */}
-      <div
+      <img
+        src="/operacao-shape/bg.png"
+        alt=""
         className="bg-image"
         style={{
           position: "fixed",
-          inset: 0,
-          backgroundImage: "url('/operacao-shape/bg.png')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          filter: "blur(2px) saturate(0.7)",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          objectPosition: "center",
+          filter: "blur(3px) saturate(0.75)",
           zIndex: 0,
         }}
       />
@@ -64,7 +68,7 @@ export default function Page() {
           position: "fixed",
           inset: 0,
           background:
-            "linear-gradient(to bottom, rgba(9,9,11,0.72) 0%, rgba(9,9,11,0.58) 40%, rgba(9,9,11,0.82) 100%)",
+            "linear-gradient(to bottom, rgba(9,9,11,0.78) 0%, rgba(9,9,11,0.62) 40%, rgba(9,9,11,0.88) 100%)",
           zIndex: 1,
         }}
       />
