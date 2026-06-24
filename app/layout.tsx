@@ -1,10 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Header from "@/components/Header";
 
 export const metadata: Metadata = {
-  title: "Operação Shape",
-  description: "Dashboard de acompanhamento de emagrecimento do casal",
+  title: "Barriguinha?",
+  description: "Os combinados do casal — desafio de 30 dias",
 };
 
 export default function RootLayout({
@@ -16,7 +15,7 @@ export default function RootLayout({
     <html lang="pt-BR">
       <head>
         <link
-          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap"
+          href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
           rel="stylesheet"
         />
       </head>
@@ -28,10 +27,7 @@ export default function RootLayout({
           fontFamily: "Inter, sans-serif",
         }}
       >
-        <Header />
-        <main style={{ maxWidth: 1200, margin: "0 auto", padding: "2rem 1.5rem" }}>
-          {children}
-        </main>
+        {children}
       </body>
     </html>
   );
