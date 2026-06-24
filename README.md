@@ -1,36 +1,66 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Operação Shape
 
-## Getting Started
+Dashboard de acompanhamento de emagrecimento para o casal. Métricas, fichas de treino, sistema de XP e check-in diário.
 
-First, run the development server:
+## Stack
+
+- Next.js 16 (App Router)
+- Tailwind CSS v4
+- Recharts 3
+- TypeScript
+- localStorage (sem backend)
+
+## Rotas
+
+| Rota | Descrição |
+|---|---|
+| `/` | Dashboard principal (visão geral do casal) |
+| `/rapha` | Página do Rapha (treinos + métricas) |
+| `/ela` | Página dela (cardio + métricas) |
+| `/treinos` | Fichas de treino detalhadas com marcar como feito |
+| `/habitos` | Regras, XP, níveis e conquistas |
+| `/checkin` | Check-in diário rápido |
+
+## Rodar localmente
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Abrir em `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Deploy na Vercel
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+**Opção 1 — via CLI:**
 
-## Learn More
+```bash
+npm i -g vercel
+vercel deploy
+```
 
-To learn more about Next.js, take a look at the following resources:
+**Opção 2 — via GitHub (recomendado):**
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Suba o projeto para um repositório GitHub
+2. Acesse vercel.com e importe o repositório
+3. Deploy automático a cada push na `main`
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+O projeto é 100% estático (sem backend), então o plano Hobby da Vercel é gratuito.
 
-## Deploy on Vercel
+## Backup dos dados
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Os dados ficam no `localStorage` do navegador. Para não perder ao limpar o browser:
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- Acesse `/habitos` → botão **Exportar JSON**
+- Salve o arquivo
+
+## Estrutura
+
+```
+app/               → páginas (App Router)
+components/        → componentes reutilizáveis
+components/charts/ → gráficos Recharts
+hooks/             → useAppState (estado global + localStorage)
+lib/               → xp.ts, streak.ts, trophies.ts
+data/              → treinos.ts (fichas de treino)
+```
