@@ -26,13 +26,18 @@ export type AppState = {
 const DEFAULT_STATE: AppState = {
   checkins: [],
   nomEla: "Soso",
-  startDate: new Date().toISOString().split("T")[0],
+  startDate: hojeLocal(),
 };
 
 const STATE_REF = doc(db, "barriguinha", "state");
 
-function hoje(): string {
-  return new Date().toISOString().split("T")[0];
+export function hojeLocal(): string {
+  const d = new Date();
+  return [
+    d.getFullYear(),
+    String(d.getMonth() + 1).padStart(2, "0"),
+    String(d.getDate()).padStart(2, "0"),
+  ].join("-");
 }
 
 export function useAppState() {
@@ -56,17 +61,17 @@ export function useAppState() {
     return unsub;
   }, []);
 
-  const salvarCheckin = useCallback((checkin: Omit<Checkin, "date">) => {
-    const date = hoje();
-    setState((prev) => {
-      const semHoje = prev.checkins.filter((c) => c.date !== date);
-      const next: AppState = {
-        ...prev,
-        checkins: [{ ...checkin, date }, ...semHoje],
-      };
-      setDoc(STATE_REF, next).catch(console.error);
-      return next;
+  const salvarCheckin = useCallback(async (checkin: Omit<Checkin, "date">): Promise<void> => {
+    const date = hojeLocal();
+    const next = await new Promise<AppState>((resolve) => {
+      setState((prev) => {
+        const semHoje = prev.checkins.filter((c) => c.date !== date);
+        const n: AppState = { ...prev, checkins: [{ ...checkin, date }, ...semHoje] };
+        resolve(n);
+        return n;
+      });
     });
+    await setDoc(STATE_REF, next);
   }, []);
 
   const exportarDados = useCallback(() => {
@@ -91,7 +96,7 @@ export function useAppState() {
     }
   }, []);
 
-  const checkinHoje = state.checkins.find((c) => c.date === hoje());
+  const checkinHoje = state.checkins.find((c) => c.date === hojeLocal());
 
   return {
     state,

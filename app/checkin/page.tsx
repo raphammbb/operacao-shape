@@ -171,6 +171,8 @@ export default function CheckinPage() {
   const router = useRouter();
   const [form, setForm] = useState<Form>(EMPTY);
   const [salvou, setSalvou] = useState(false);
+  const [erro, setErro] = useState(false);
+  const [salvando, setSalvando] = useState(false);
 
   useEffect(() => {
     if (loaded && checkinHoje) {
@@ -183,10 +185,18 @@ export default function CheckinPage() {
     setForm((f) => ({ ...f, [key]: val }));
   }
 
-  function handleSalvar() {
-    salvarCheckin(form);
-    setSalvou(true);
-    setTimeout(() => router.push("/"), 1200);
+  async function handleSalvar() {
+    setSalvando(true);
+    setErro(false);
+    try {
+      await salvarCheckin(form);
+      setSalvou(true);
+      setTimeout(() => router.push("/"), 1200);
+    } catch {
+      setErro(true);
+    } finally {
+      setSalvando(false);
+    }
   }
 
   const nomEla = state.nomEla || "Soso";
@@ -265,6 +275,22 @@ export default function CheckinPage() {
               }}
             >
               ✓ Salvo! Redirecionando…
+            </div>
+          )}
+
+          {erro && (
+            <div
+              style={{
+                ...cardStyle,
+                background: "rgba(239,68,68,0.1)",
+                border: "1px solid rgba(239,68,68,0.3)",
+                color: "#f87171",
+                textAlign: "center",
+                fontWeight: 600,
+                marginBottom: "1rem",
+              }}
+            >
+              Erro ao salvar — verifique a conexão e tente novamente
             </div>
           )}
 
@@ -395,23 +421,28 @@ export default function CheckinPage() {
           {/* Botão salvar */}
           <button
             onClick={handleSalvar}
-            disabled={salvou}
+            disabled={salvou || salvando}
             style={{
               width: "100%",
               padding: "0.9rem",
               borderRadius: "0.875rem",
               border: "none",
-              background: salvou ? "rgba(34,197,94,0.2)" : "#fafafa",
+              background: salvou
+                ? "rgba(34,197,94,0.2)"
+                : salvando
+                ? "rgba(250,250,250,0.5)"
+                : "#fafafa",
               color: salvou ? "#22c55e" : "#09090b",
               fontSize: "0.95rem",
               fontWeight: 700,
-              cursor: salvou ? "default" : "pointer",
+              cursor: salvou || salvando ? "default" : "pointer",
               fontFamily: "inherit",
               letterSpacing: "-0.01em",
               marginTop: "0.5rem",
+              opacity: salvando ? 0.7 : 1,
             }}
           >
-            {checkinHoje ? "Atualizar check-in" : "Salvar check-in"}
+            {salvando ? "Salvando…" : checkinHoje ? "Atualizar check-in" : "Salvar check-in"}
           </button>
         </div>
       </div>
