@@ -1,6 +1,8 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
+import { doc, onSnapshot, setDoc } from "firebase/firestore";
+import { db } from "@/lib/firebase";
 
 export type Checkin = {
   date: string;
@@ -21,32 +23,16 @@ export type AppState = {
   startDate: string;
 };
 
-const STORAGE_KEY = "barriguinha-v1";
-
 const DEFAULT_STATE: AppState = {
   checkins: [],
   nomEla: "Soso",
   startDate: new Date().toISOString().split("T")[0],
 };
 
+const STATE_REF = doc(db, "barriguinha", "state");
+
 function hoje(): string {
   return new Date().toISOString().split("T")[0];
-}
-
-function loadState(): AppState {
-  if (typeof window === "undefined") return DEFAULT_STATE;
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (!raw) return DEFAULT_STATE;
-    return { ...DEFAULT_STATE, ...JSON.parse(raw) };
-  } catch {
-    return DEFAULT_STATE;
-  }
-}
-
-function saveState(state: AppState) {
-  if (typeof window === "undefined") return;
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
 
 export function useAppState() {
@@ -54,28 +40,34 @@ export function useAppState() {
   const [loaded, setLoaded] = useState(false);
 
   useEffect(() => {
-    setState(loadState());
-    setLoaded(true);
+    const unsub = onSnapshot(
+      STATE_REF,
+      (snap) => {
+        if (snap.exists()) {
+          setState({ ...DEFAULT_STATE, ...(snap.data() as AppState) });
+        }
+        setLoaded(true);
+      },
+      (err) => {
+        console.error("Firestore:", err);
+        setLoaded(true);
+      }
+    );
+    return unsub;
   }, []);
 
-  const updateState = useCallback((updater: (prev: AppState) => AppState) => {
+  const salvarCheckin = useCallback((checkin: Omit<Checkin, "date">) => {
+    const date = hoje();
     setState((prev) => {
-      const next = updater(prev);
-      saveState(next);
+      const semHoje = prev.checkins.filter((c) => c.date !== date);
+      const next: AppState = {
+        ...prev,
+        checkins: [{ ...checkin, date }, ...semHoje],
+      };
+      setDoc(STATE_REF, next).catch(console.error);
       return next;
     });
   }, []);
-
-  const salvarCheckin = useCallback(
-    (checkin: Omit<Checkin, "date">) => {
-      updateState((prev) => {
-        const date = hoje();
-        const semHoje = prev.checkins.filter((c) => c.date !== date);
-        return { ...prev, checkins: [{ ...checkin, date }, ...semHoje] };
-      });
-    },
-    [updateState]
-  );
 
   const exportarDados = useCallback(() => {
     const json = JSON.stringify(state, null, 2);
@@ -88,11 +80,11 @@ export function useAppState() {
     URL.revokeObjectURL(url);
   }, [state]);
 
-  const importarDados = useCallback((json: string) => {
+  const importarDados = useCallback(async (json: string) => {
     try {
       const parsed = JSON.parse(json);
       const next: AppState = { ...DEFAULT_STATE, ...parsed };
-      saveState(next);
+      await setDoc(STATE_REF, next);
       setState(next);
     } catch {
       console.error("Erro ao importar dados");
