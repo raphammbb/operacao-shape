@@ -25,7 +25,7 @@ const STORAGE_KEY = "barriguinha-v1";
 
 const DEFAULT_STATE: AppState = {
   checkins: [],
-  nomEla: "Ela",
+  nomEla: "Soso",
   startDate: new Date().toISOString().split("T")[0],
 };
 

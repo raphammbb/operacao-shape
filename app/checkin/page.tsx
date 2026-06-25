@@ -189,7 +189,7 @@ export default function CheckinPage() {
     setTimeout(() => router.push("/"), 1200);
   }
 
-  const nomEla = state.nomEla || "Ela";
+  const nomEla = state.nomEla || "Soso";
 
   if (!loaded) {
     return (

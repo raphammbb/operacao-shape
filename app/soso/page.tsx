@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useAppState } from "@/hooks/useAppState";
 import { NavBar } from "@/components/NavBar";
 
-const COR_ELA = "#f472b6";
+const COR_SOSO = "#f472b6";
 const COR_VERDE = "#22c55e";
 const COR_CINZA = "#3f3f46";
 const COR_LARANJA = "#f59e0b";
@@ -45,7 +45,7 @@ function Bolinha({ cor }: { cor: string | null }) {
   );
 }
 
-export default function ElaPage() {
+export default function SosoPage() {
   const { state, loaded, checkinHoje } = useAppState();
 
   const dias = diasDaSemana();
@@ -66,7 +66,7 @@ export default function ElaPage() {
     );
   }
 
-  const nomEla = state.nomEla || "Ela";
+  const nomEla = state.nomEla || "Soso";
   const checkinPorData = Object.fromEntries(
     state.checkins.map((c) => [c.date, c])
   );
@@ -94,7 +94,7 @@ export default function ElaPage() {
                 display: "inline-block",
                 width: 6,
                 height: 28,
-                background: COR_ELA,
+                background: COR_SOSO,
                 borderRadius: 3,
                 marginBottom: "0.5rem",
                 verticalAlign: "middle",
@@ -171,7 +171,7 @@ export default function ElaPage() {
                     fontWeight: 600,
                     letterSpacing: "0.05em",
                     textTransform: "uppercase",
-                    color: dias[i] === hoje ? COR_ELA : "#3f3f46",
+                    color: dias[i] === hoje ? COR_SOSO : "#3f3f46",
                   }}
                 >
                   {d}
@@ -287,9 +287,9 @@ export default function ElaPage() {
                 width: "100%",
                 padding: "0.9rem",
                 borderRadius: "0.875rem",
-                border: `1px solid ${COR_ELA}`,
+                border: `1px solid ${COR_SOSO}`,
                 background: "transparent",
-                color: COR_ELA,
+                color: COR_SOSO,
                 fontSize: "0.88rem",
                 fontWeight: 600,
                 cursor: "pointer",

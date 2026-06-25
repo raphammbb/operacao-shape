@@ -160,7 +160,7 @@ export default function Page() {
             </Link>
           )}
 
-          {/* Atalhos Rapha / Ela */}
+          {/* Atalhos Rapha / Soso */}
           <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1rem" }}>
             <Link
               href="/rapha"
@@ -183,7 +183,7 @@ export default function Page() {
               💜 Rapha
             </Link>
             <Link
-              href="/ela"
+              href="/soso"
               style={{
                 flex: 1,
                 display: "flex",
@@ -200,7 +200,7 @@ export default function Page() {
                 textDecoration: "none",
               }}
             >
-              💗 Ela
+              💗 Soso
             </Link>
           </div>
 

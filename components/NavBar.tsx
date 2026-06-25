@@ -7,7 +7,7 @@ const links = [
   { href: "/", label: "Home", icon: "🏠", key: "home" },
   { href: "/checkin", label: "Check-in", icon: "✅", key: "checkin" },
   { href: "/rapha", label: "Rapha", icon: "💜", key: "rapha" },
-  { href: "/ela", label: "Ela", icon: "💗", key: "ela" },
+  { href: "/soso", label: "Soso", icon: "💗", key: "soso" },
 ];
 
 export function NavBar() {
