@@ -1,3 +1,9 @@
+"use client";
+
+import Link from "next/link";
+import { NavBar } from "@/components/NavBar";
+import { useAppState } from "@/hooks/useAppState";
+
 const combinados = [
   {
     emoji: "🍔",
@@ -32,6 +38,8 @@ const combinados = [
 ];
 
 export default function Page() {
+  const { checkinHoje, loaded } = useAppState();
+
   return (
     <>
       <style>{`
@@ -44,7 +52,6 @@ export default function Page() {
         }
       `}</style>
 
-      {/* Imagem de fundo pulsando */}
       <img
         src="/operacao-shape/bg.png"
         alt=""
@@ -62,7 +69,6 @@ export default function Page() {
         }}
       />
 
-      {/* Overlay gradiente */}
       <div
         style={{
           position: "fixed",
@@ -73,7 +79,6 @@ export default function Page() {
         }}
       />
 
-      {/* Conteúdo */}
       <div
         style={{
           position: "relative",
@@ -83,12 +88,12 @@ export default function Page() {
           flexDirection: "column",
           alignItems: "center",
           justifyContent: "center",
-          padding: "3rem 1.25rem",
+          padding: "3rem 1.25rem 6rem",
         }}
       >
         <div style={{ width: "100%", maxWidth: 580 }}>
           {/* Título */}
-          <div style={{ marginBottom: "2.5rem" }}>
+          <div style={{ marginBottom: "2rem" }}>
             <h1
               style={{
                 fontSize: "clamp(3rem, 10vw, 4.5rem)",
@@ -115,7 +120,91 @@ export default function Page() {
             </p>
           </div>
 
-          {/* Cards */}
+          {/* Status do check-in de hoje */}
+          {loaded && (
+            <Link
+              href="/checkin"
+              style={{ textDecoration: "none", display: "block", marginBottom: "1rem" }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  padding: "0.9rem 1.1rem",
+                  borderRadius: "0.875rem",
+                  border: checkinHoje
+                    ? "1px solid rgba(34,197,94,0.25)"
+                    : "1px solid rgba(255,255,255,0.1)",
+                  background: checkinHoje
+                    ? "rgba(34,197,94,0.08)"
+                    : "rgba(255,255,255,0.04)",
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "0.6rem" }}>
+                  <span style={{ fontSize: "1.1rem" }}>
+                    {checkinHoje ? "✅" : "🔲"}
+                  </span>
+                  <span
+                    style={{
+                      fontSize: "0.88rem",
+                      fontWeight: 500,
+                      color: checkinHoje ? "#22c55e" : "#a1a1aa",
+                    }}
+                  >
+                    {checkinHoje ? "Check-in de hoje feito" : "Fazer check-in de hoje"}
+                  </span>
+                </div>
+                <span style={{ fontSize: "0.78rem", color: "#3f3f46" }}>→</span>
+              </div>
+            </Link>
+          )}
+
+          {/* Atalhos Rapha / Ela */}
+          <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1rem" }}>
+            <Link
+              href="/rapha"
+              style={{
+                flex: 1,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "0.4rem",
+                padding: "0.7rem",
+                borderRadius: "0.875rem",
+                border: "1px solid rgba(139,92,246,0.3)",
+                background: "rgba(139,92,246,0.07)",
+                color: "#8b5cf6",
+                fontWeight: 600,
+                fontSize: "0.88rem",
+                textDecoration: "none",
+              }}
+            >
+              💜 Rapha
+            </Link>
+            <Link
+              href="/ela"
+              style={{
+                flex: 1,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "0.4rem",
+                padding: "0.7rem",
+                borderRadius: "0.875rem",
+                border: "1px solid rgba(244,114,182,0.3)",
+                background: "rgba(244,114,182,0.07)",
+                color: "#f472b6",
+                fontWeight: 600,
+                fontSize: "0.88rem",
+                textDecoration: "none",
+              }}
+            >
+              💗 Ela
+            </Link>
+          </div>
+
+          {/* Combinados */}
           <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
             {combinados.map((c) => (
               <div
@@ -131,7 +220,6 @@ export default function Page() {
                   backgroundColor: "rgba(15,15,18,0.65)",
                 }}
               >
-                {/* Pílula colorida lateral */}
                 <div
                   style={{
                     width: 3,
@@ -140,8 +228,6 @@ export default function Page() {
                     opacity: 0.8,
                   }}
                 />
-
-                {/* Conteúdo do card */}
                 <div
                   style={{
                     display: "flex",
@@ -188,10 +274,9 @@ export default function Page() {
             ))}
           </div>
 
-          {/* Footer */}
           <p
             style={{
-              marginTop: "2.5rem",
+              marginTop: "2rem",
               textAlign: "center",
               fontSize: "0.72rem",
               color: "#27272a",
@@ -202,6 +287,8 @@ export default function Page() {
           </p>
         </div>
       </div>
+
+      <NavBar />
     </>
   );
 }

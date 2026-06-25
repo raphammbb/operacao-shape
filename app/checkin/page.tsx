@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 import { useAppState, type Checkin } from "@/hooks/useAppState";
+import { NavBar } from "@/components/NavBar";
 
 type Form = Omit<Checkin, "date">;
 
@@ -416,58 +416,7 @@ export default function CheckinPage() {
         </div>
       </div>
 
-      {/* Nav */}
-      <NavBar active="checkin" />
+      <NavBar />
     </>
-  );
-}
-
-function NavBar({ active }: { active: string }) {
-  const links = [
-    { href: "/", label: "Home", icon: "🏠", key: "home" },
-    { href: "/checkin", label: "Check-in", icon: "✅", key: "checkin" },
-    { href: "/rapha", label: "Rapha", icon: "💜", key: "rapha" },
-    { href: "/ela", label: "Ela", icon: "💗", key: "ela" },
-  ];
-
-  return (
-    <nav
-      style={{
-        position: "fixed",
-        bottom: 0,
-        left: 0,
-        right: 0,
-        display: "flex",
-        justifyContent: "space-around",
-        padding: "0.75rem 0 calc(0.75rem + env(safe-area-inset-bottom))",
-        background: "rgba(9,9,11,0.92)",
-        backdropFilter: "blur(16px)",
-        WebkitBackdropFilter: "blur(16px)",
-        borderTop: "1px solid rgba(255,255,255,0.06)",
-        zIndex: 100,
-      }}
-    >
-      {links.map((l) => (
-        <Link
-          key={l.key}
-          href={l.href}
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            gap: "0.2rem",
-            textDecoration: "none",
-            color: active === l.key ? "#fafafa" : "#3f3f46",
-            fontSize: "0.6rem",
-            fontWeight: 600,
-            letterSpacing: "0.05em",
-            textTransform: "uppercase",
-          }}
-        >
-          <span style={{ fontSize: "1.3rem" }}>{l.icon}</span>
-          {l.label}
-        </Link>
-      ))}
-    </nav>
   );
 }
